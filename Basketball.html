@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Finevr's Basketball Board</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 50px;
+        }
+
+        .team {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .points-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .points {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+            .points.green {
+                color: green;
+            }
+
+            .points.red {
+                color: red;
+            }
+
+        .dash {
+            font-size: 36px;
+            margin: 0 10px;
+        }
+
+        .team-name {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Finevr's Basketball Board</h1>
+
+        <div class="team">
+            <div class="team-name">Home</div>
+            <div class="points-container">
+                <div class="points" id="homePoints">0</div>
+                <div class="dash">-</div>
+                <div class="points" id="guestPoints">0</div>
+            </div>
+            <div class="buttons">
+                <button class="button" onclick="addPoints('home', 3)">+3 home</button>
+                <button class="button" onclick="addPoints('home', 2)">+2 home</button>
+                <button class="button" onclick="addPoints('home', 1)">+1 home</button>
+                <button class="button" onclick="subtractPoints('home', 1)">-1 home</button>
+                <button class="button" onclick="subtractPoints('home', 2)">-2 home</button>
+                <button class="button" onclick="subtractPoints('home', 3)">-3 home</button>
+            </div>
+        </div>
+
+        <div class="team">
+            <div class="team-name">Guests</div>
+            <!-- Points display is already included in the points-container above -->
+            <div class="buttons">
+                <button class="button" onclick="addPoints('guest', 3)">+3 guest</button>
+                <button class="button" onclick="addPoints('guest', 2)">+2 guest</button>
+                <button class="button" onclick="addPoints('guest', 1)">+1 guest</button>
+                <button class="button" onclick="subtractPoints('guest', 1)">-1 guest</button>
+                <button class="button" onclick="subtractPoints('guest', 2)">-2 guest</button>
+                <button class="button" onclick="subtractPoints('guest', 3)">-3 guest</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addPoints(team, points) {
+            var homePointsElement = document.getElementById('homePoints');
+            var guestPointsElement = document.getElementById('guestPoints');
+
+            var homePoints = parseInt(homePointsElement.innerHTML);
+            var guestPoints = parseInt(guestPointsElement.innerHTML);
+
+            if (team === 'home') {
+                homePoints += points;
+            } else if (team === 'guest') {
+                guestPoints += points;
+            }
+
+            homePointsElement.innerHTML = homePoints;
+            guestPointsElement.innerHTML = guestPoints;
+
+            updateTextColor();
+        }
+
+        function subtractPoints(team, points) {
+            var homePointsElement = document.getElementById('homePoints');
+            var guestPointsElement = document.getElementById('guestPoints');
+
+            var homePoints = parseInt(homePointsElement.innerHTML);
+            var guestPoints = parseInt(guestPointsElement.innerHTML);
+
+            if (team === 'home') {
+                homePoints -= points;
+                // Ensure points are non-negative
+                homePoints = Math.max(homePoints, 0);
+            } else if (team === 'guest') {
+                guestPoints -= points;
+                // Ensure points are non-negative
+                guestPoints = Math.max(guestPoints, 0);
+            }
+
+            homePointsElement.innerHTML = homePoints;
+            guestPointsElement.innerHTML = guestPoints;
+
+            updateTextColor();
+        }
+
+        function updateTextColor() {
+            var homePointsElement = document.getElementById('homePoints');
+            var guestPointsElement = document.getElementById('guestPoints');
+            var homePoints = parseInt(homePointsElement.innerHTML);
+            var guestPoints = parseInt(guestPointsElement.innerHTML);
+
+            // Update text color based on points
+            if (homePoints > guestPoints) {
+                homePointsElement.classList.add('green');
+                homePointsElement.classList.remove('red');
+                guestPointsElement.classList.remove('green');
+                guestPointsElement.classList.add('red');
+            } else if (homePoints < guestPoints) {
+                guestPointsElement.classList.add('green');
+                guestPointsElement.classList.remove('red');
+                homePointsElement.classList.remove('green');
+                homePointsElement.classList.add('red');
+            } else {
+                // If equal, remove green color from both
+                homePointsElement.classList.remove('green', 'red');
+                guestPointsElement.classList.remove('green', 'red');
+            }
+        }
+    </script>
+</body>
+</html>
